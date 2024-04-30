@@ -1,0 +1,8 @@
+services:
+    hikka:
+        build: docker
+        container_name: hikka
+        volumes:
+            - ./data:/app
+        ports:
+            - "8080:8080"
