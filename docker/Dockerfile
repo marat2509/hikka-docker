@@ -1,12 +1,12 @@
-FROM python:3.12-slim
-
-RUN pip install --upgrade pip
-RUN apt update
-RUN apt install -y --no-install-recommends git python3-pip git python3-dev python3-virtualenv libwebp-dev libz-dev libjpeg-dev libopenjp2-7 ffmpeg libffi-dev libcairo2 build-essential
-RUN rm -rf /var/lib/apt/lists/*
+FROM python:3.10-slim
 
 WORKDIR /app
 COPY entrypoint.sh /entrypoint.sh
+
+RUN apt update
+RUN apt install -y --no-install-recommends git build-essential python3-dev
+RUN rm -rf /var/lib/apt/lists/* /var/cache/apt/archives /tmp/*
+
 
 # Hikka specific settings
 ENV DOCKER=true
@@ -20,5 +20,5 @@ ENV PIP_NO_CACHE_DIR=1 \
 # User customizable settings
 ENV BRANCH=master
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["bash", "/entrypoint.sh"]
 EXPOSE ${PORT}

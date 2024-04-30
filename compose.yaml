@@ -3,6 +3,6 @@ services:
         build: docker
         container_name: hikka
         volumes:
-            - ./data:/app
+            - ./data:/data
         ports:
             - "8080:8080"
