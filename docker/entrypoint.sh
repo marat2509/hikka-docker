@@ -1,9 +1,7 @@
-#!/bin/bash
+#!/bin/sh
 
-if [ ! -e "/app/Hikka" ] ; then
-    cd /app
+if [ ! -e "/app/.git" ] ; then
     git clone https://github.com/hikariatama/Hikka -b $BRANCH --depth=1 /app
 fi
 
-python -m hikka
-read -p
+python3 -m hikka
