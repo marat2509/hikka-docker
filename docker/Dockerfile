@@ -3,11 +3,8 @@ FROM python:3.11-slim
 WORKDIR /app
 
 RUN apt update
-RUN apt install -y --no-install-recommends git
-# RUN apk update
-# RUN apk add git build-base linux-headers
+RUN apt install -y --no-install-recommends git gcc libc6-dev
 RUN rm -rf /var/lib/apt/lists/* /var/cache/apt/archives /tmp/*
-# RUN rm -rf /var/cache/apk/* /tmp/*
 
 # Hikka specific settings
 ENV DOCKER=true
@@ -20,7 +17,9 @@ ENV PIP_NO_CACHE_DIR=1 \
 
 # User customizable settings
 ENV BRANCH=master
+ENV USE_VENV=true
 
-COPY entrypoint.sh /entrypoint.sh
-CMD ["sh", "/entrypoint.sh"]
+COPY scripts/entrypoint.sh /docker/entrypoint.sh
+COPY scripts/util_functions.sh /docker/util_functions.sh
+CMD ["bash", "/docker/entrypoint.sh"]
 EXPOSE 8080

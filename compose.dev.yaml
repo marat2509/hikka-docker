@@ -1,6 +1,6 @@
 services:
     hikka:
-        image: ghcr.io/marat2509/hikka-docker
+        build: docker
         container_name: hikka
         volumes:
             - ./data:/data
