@@ -16,7 +16,8 @@ ENV PIP_NO_CACHE_DIR=1 \
     PYTHONDONTWRITEBYTECODE=1
 
 # User customizable settings
-ENV BRANCH=master
+ENV REPO_BRANCH=master
+ENV REPO_URL=https://github.com/hikariatama/Hikka
 ENV USE_VENV=true
 
 COPY scripts/entrypoint.sh /docker/entrypoint.sh

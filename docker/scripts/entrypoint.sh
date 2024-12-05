@@ -17,7 +17,7 @@ if [ "$USE_VENV" = "true" ]; then
 fi
 
 if [ ! -e "/app/.git" ]; then
-    git clone https://github.com/hikariatama/Hikka -b $BRANCH --depth=1 /app
+    git clone "$REPO_URL" -b "$REPO_BRANCH" --depth=1 /app
 fi
 
 python3 -m hikka

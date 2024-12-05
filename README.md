@@ -56,7 +56,8 @@ If you need to build the Docker image, use the following steps:
 Configuration options can be set using environment variables. Here are some of the common configuration options:
 
 - `USE_VENV`: Set to `true` to use a virtual environment within the container. (default: `true`)
-- `BRANCH`: Specify the branch of the Hikka repository to clone (default: `main`).
+- `REPO_BRANCH`: Specify the branch of the Hikka repository to clone (default: `main`).
+- `REPO_URL`: Specify the URL of the Hikka repository to clone (default: `https://github.com/hikariatama/Hikka`).
 
 ## License
 
