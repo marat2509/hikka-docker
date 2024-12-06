@@ -3,7 +3,7 @@ FROM python:3.11-slim
 WORKDIR /app
 
 RUN apt update
-RUN apt install -y --no-install-recommends git ffmpeg build-essential libmagic1
+RUN apt install -y --no-install-recommends --no-install-suggests git ffmpeg build-essential libmagic1
 RUN rm -rf /var/lib/apt/lists/* /var/cache/apt/archives /tmp/*
 
 # Hikka specific settings
