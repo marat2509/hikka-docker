@@ -3,7 +3,7 @@ FROM python:3.11-slim
 WORKDIR /app
 
 RUN apt update
-RUN apt install -y --no-install-recommends git gcc libc6-dev
+RUN apt install -y --no-install-recommends git ffmpeg build-essential libcairo2 libmagic1 libc6-dev
 RUN rm -rf /var/lib/apt/lists/* /var/cache/apt/archives /tmp/*
 
 # Hikka specific settings
