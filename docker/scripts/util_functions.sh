@@ -39,7 +39,7 @@ deactivate_venv() {
     fi
 }
 
-# Remove virtual environment safely
+# Remove virtual environment contents safely
 remove_venv() {
     local venv_path="$1"
     
@@ -49,27 +49,28 @@ remove_venv() {
     fi
     
     if [ -d "$venv_path" ]; then
-        log_warn "Removing virtual environment: $venv_path"
+        log_warn "Cleaning virtual environment contents: $venv_path"
         
         # Deactivate if this venv is currently active
         if [ "$VIRTUAL_ENV" = "$venv_path" ]; then
             deactivate_venv
         fi
         
-        # Remove the entire virtual environment directory
-        rm -rf "$venv_path"
+        # Remove contents but keep the directory structure
+        rm -rf "$venv_path"/*
+        rm -rf "$venv_path"/.*[!.]* 2>/dev/null || true  # Remove hidden files except . and ..
         
-        if [ ! -d "$venv_path" ]; then
-            log_success "Virtual environment removed successfully"
+        # Check if contents were removed successfully
+        if [ -z "$(ls -A "$venv_path" 2>/dev/null)" ]; then
+            log_success "Virtual environment contents removed successfully"
         else
-            log_error "Failed to remove virtual environment"
+            log_error "Failed to remove some virtual environment contents"
             return 1
         fi
     else
         log_info "Virtual environment does not exist: $venv_path"
     fi
 }
-
 # Create virtual environment
 create_venv() {
     local venv_path="$1"
