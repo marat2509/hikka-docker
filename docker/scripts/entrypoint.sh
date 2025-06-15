@@ -8,6 +8,7 @@ set -e  # Exit on error
 # Environment variables with default values
 VENV_PATH="${VENV_PATH:-/venv}"
 APP_PATH="${APP_PATH:-/app}"
+APP_MODULE="${APP_MODULE:-hikka}"
 REPO_DEPTH="${REPO_DEPTH:-1}"
 USE_VENV="${USE_VENV:-true}"
 REPO_URL="${REPO_URL:-https://github.com/hikariatama/Hikka}"
@@ -16,6 +17,7 @@ REPO_BRANCH="${REPO_BRANCH:-master}"
 log_info "Using configuration:"
 log_info "  VENV_PATH: $VENV_PATH"
 log_info "  APP_PATH: $APP_PATH"
+log_info "  APP_MODULE: $APP_MODULE"
 log_info "  USE_VENV: $USE_VENV"
 log_info "  REPO_URL: $REPO_URL"
 log_info "  REPO_BRANCH: $REPO_BRANCH"
@@ -78,5 +80,5 @@ if file_exists_and_not_empty "requirements.txt"; then
 fi
 
 # Start the application
-log_info "Starting Hikka application"
-exec python3 -m hikka
+log_info "Starting application"
+exec python3 -m "$APP_MODULE"
