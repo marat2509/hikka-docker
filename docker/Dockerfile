@@ -1,9 +1,9 @@
-FROM python:3.11-slim
+FROM python:3.10-slim
 
-WORKDIR /app
+ENV PIP_NO_CACHE_DIR=1
 
 RUN apt update
-RUN apt install -y --no-install-recommends --no-install-suggests git build-essential libmagic1
+RUN apt install -y --fix-missing --no-install-recommends --no-install-suggests git build-essential libmagic1 python3-dev gcc curl libcairo2 ffmpeg libmagic1 libavcodec-dev libavutil-dev libavformat-dev libswscale-dev libavdevice-dev neofetch wkhtmltopdf
 RUN rm -rf /var/lib/apt/lists/* /var/cache/apt/archives /tmp/*
 
 # Hikka specific settings
@@ -14,11 +14,6 @@ ENV GIT_PYTHON_REFRESH=quiet
 ENV PIP_NO_CACHE_DIR=1 \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1
-
-# User customizable settings
-ENV REPO_BRANCH=master
-ENV REPO_URL=https://github.com/hikariatama/Hikka
-ENV USE_VENV=true
 
 COPY scripts/entrypoint.sh /docker/entrypoint.sh
 COPY scripts/util_functions.sh /docker/util_functions.sh
