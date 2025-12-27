@@ -16,7 +16,7 @@ ENV AIOHTTP_NO_EXTENSIONS=1
 
 
 RUN apt update
-RUN apt install -y --fix-missing --no-install-recommends --no-install-suggests git build-essential libmagic1 python3-dev gcc curl libcairo2 ffmpeg libmagic1 libavcodec-dev libavutil-dev libavformat-dev libswscale-dev libavdevice-dev neofetch wkhtmltopdf
+RUN apt install -y --fix-missing --no-install-recommends --no-install-suggests git build-essential libmagic1 python3-dev gcc curl libcairo2 ffmpeg libavcodec-dev libavutil-dev libavformat-dev libswscale-dev libavdevice-dev
 RUN rm -rf /var/lib/apt/lists/* /var/cache/apt/archives /tmp/*
 
 COPY scripts/entrypoint.sh /docker/entrypoint.sh
