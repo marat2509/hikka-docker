@@ -42,24 +42,24 @@ deactivate_venv() {
 # Remove virtual environment contents safely
 remove_venv() {
     local venv_path="$1"
-    
+
     if [ -z "$venv_path" ] || [ "$venv_path" = "/" ]; then
         log_error "Unsafe path for venv removal: $venv_path"
         return 1
     fi
-    
+
     if [ -d "$venv_path" ]; then
         log_warn "Cleaning virtual environment contents: $venv_path"
-        
+
         # Deactivate if this venv is currently active
         if [ "$VIRTUAL_ENV" = "$venv_path" ]; then
             deactivate_venv
         fi
-        
+
         # Remove contents but keep the directory structure
         rm -rf "$venv_path"/*
         rm -rf "$venv_path"/.*[!.]* 2>/dev/null || true  # Remove hidden files except . and ..
-        
+
         # Check if contents were removed successfully
         if [ -z "$(ls -A "$venv_path" 2>/dev/null)" ]; then
             log_success "Virtual environment contents removed successfully"
@@ -74,14 +74,14 @@ remove_venv() {
 # Create virtual environment
 create_venv() {
     local venv_path="$1"
-    
+
     log_info "Creating virtual environment at $venv_path"
-    
+
     if ! python3 -m venv "$venv_path"; then
         log_error "Failed to create virtual environment"
         return 1
     fi
-    
+
     echo $(python_version) > "$venv_path/version"
     log_success "Virtual environment created successfully"
 }
@@ -89,7 +89,7 @@ create_venv() {
 # Activate virtual environment
 activate_venv() {
     local venv_path="$1"
-    
+
     if [ -f "$venv_path/bin/activate" ]; then
         source "$venv_path/bin/activate"
         log_info "Virtual environment activated: $venv_path"
@@ -122,28 +122,28 @@ clone_repository() {
     local branch="$2"
     local target_dir="$3"
     local depth="${4:-1}"
-    
+
     if [ -z "$repo_url" ] || [ -z "$target_dir" ]; then
         log_error "Required parameters: repo_url and target_dir"
         return 1
     fi
-    
+
     # Check if repository already exists
     if [ -e "$target_dir/.git" ]; then
         log_info "Repository already exists at $target_dir"
         return 0
     fi
-    
+
     log_info "Cloning repository $repo_url to $target_dir"
-    
+
     local git_cmd="git clone \"$repo_url\""
-    
+
     if [ -n "$branch" ]; then
         git_cmd="$git_cmd -b \"$branch\""
     fi
-    
+
     git_cmd="$git_cmd --depth=$depth \"$target_dir\""
-    
+
     if eval $git_cmd; then
         log_success "Repository cloned successfully"
         return 0
@@ -161,4 +161,32 @@ file_exists_and_not_empty() {
 # Check if directory exists
 dir_exists() {
     [ -d "$1" ]
+}
+
+# Install system packages
+install_system_packages() {
+    local packages="$1"
+
+    if [ -n "$packages" ]; then
+        # Validate package names (allow alphanumeric, +, -, ., _, =, and space)
+        if echo "$packages" | grep -q '[^a-zA-Z0-9\+\-\._= ]'; then
+            log_error "Invalid characters detected in APT_INSTALL_PACKAGES. Allowed: alphanumeric, +, -, ., _, =, and space."
+            return 1
+        fi
+
+        log_info "Installing system packages: $packages"
+
+        export DEBIAN_FRONTEND=noninteractive
+
+        if apt-get update && \
+           apt-get install -y --no-install-recommends $packages && \
+           apt-get clean && \
+           rm -rf /var/lib/apt/lists/*; then
+            log_success "System packages installed successfully"
+            return 0
+        else
+            log_error "Failed to install system packages"
+            return 1
+        fi
+    fi
 }
